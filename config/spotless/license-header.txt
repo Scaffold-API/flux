@@ -1,0 +1,4 @@
+/*
+ * Copyright Scaffold Software LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
