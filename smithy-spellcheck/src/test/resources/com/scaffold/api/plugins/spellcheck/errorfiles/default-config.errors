@@ -1,0 +1,5 @@
+[DANGER] com.spellcheck.tst#MyStructure: Potential typo in docstring. Suggested correction(s): [Contains a Spelling error, Contains a Spewing error, Contains a Spieling error] | SpellCheck.Trait.documentation
+[DANGER] com.spellcheck.tst#MyStructure$member: Potential typo in docstring. Suggested correction(s): [Member docs Error] | SpellCheck.Trait.documentation
+[DANGER] com.spellcheck.tst#ThingSpelingStuff: Potential typo in shape name `ThingSpelingStuff`. Suggested correction(s): [ThingSpellingStuf, ThingSpewingStuf, ThingSpielingStuf] | SpellCheck.Shape
+[DANGER] com.spellcheck.tst#ThingSpelingStuff$member_abot: Potential typo in shape name `member_abot`. Suggested correction(s): [member_about, member_abbot, member_cabot, member_abort] | SpellCheck.Shape
+[DANGER] -: Potential typo in namespace `com.spellcheck.tst`. Suggested correction(s): [com.spellcheck.st, com.spellcheck.test, com.spellcheck.tnt, com.spellcheck.tt] | SpellCheck.Namespace

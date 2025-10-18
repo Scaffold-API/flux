@@ -1,7 +1,12 @@
 $version: "2"
 
 metadata validators = [
-    {name: "SpellCheck"}
+    {
+        name: "SpellCheck",
+        configuration: {
+            ignore: ["abot", "speling"]
+        }
+    }
 ]
 
 namespace com.spellcheck.test

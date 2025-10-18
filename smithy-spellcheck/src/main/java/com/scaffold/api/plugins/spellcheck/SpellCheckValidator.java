@@ -8,25 +8,27 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.languagetool.JLanguageTool;
-import org.languagetool.Languages;
-import org.languagetool.rules.Categories;
+import org.languagetool.markup.AnnotatedText;
+import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
-import org.languagetool.rules.TestRemoteRule;
 import org.languagetool.rules.spelling.SpellingCheckRule;
 import software.amazon.smithy.model.Model;
+import software.amazon.smithy.model.SourceLocation;
+import software.amazon.smithy.model.knowledge.TextIndex;
+import software.amazon.smithy.model.knowledge.TextInstance;
 import software.amazon.smithy.model.node.NodeMapper;
 import software.amazon.smithy.model.shapes.Shape;
+import software.amazon.smithy.model.traits.DocumentationTrait;
+import software.amazon.smithy.model.traits.Trait;
 import software.amazon.smithy.model.validation.AbstractValidator;
 import software.amazon.smithy.model.validation.Severity;
 import software.amazon.smithy.model.validation.ValidationEvent;
 import software.amazon.smithy.model.validation.ValidatorService;
 import software.amazon.smithy.utils.SmithyInternalApi;
-import org.languagetool.rules.en.MorfologikAmericanSpellerRule;
 import software.amazon.smithy.utils.StringUtils;
 
 /**
@@ -34,29 +36,34 @@ import software.amazon.smithy.utils.StringUtils;
  */
 @SmithyInternalApi
 public final class SpellCheckValidator extends AbstractValidator {
-    private static final String ROOT_ID = "spellcheck.typo";
-    private static final String NAME_TYPO_ID = String.format("%s.name", ROOT_ID);
-    private static final String DOCUMENTATION_TYPO_ID = String.format("%s.documentation", ROOT_ID);
+    private static final String TRAIT = "Trait";
+    private static final String SHAPE = "Shape";
+    private static final String NAMESPACE = "Namespace";
     private static final Set<Character> TRIGGER_CHARS = Set.of('-', '_');
 
     private final JLanguageTool checker;
+    private final Config config;
 
+    // TODO: Allow users to disable comment checking
     public static final class Config {
         private List<String> ignore = Collections.emptyList();
+        private boolean docstrings = true;
+        private int limit = 4;
         private String language = "en";
 
-        public List<String> getIgnore() {
-            return ignore;
-        }
-
-        public String getLanguage() {
-            return language;
-        }
-
         public void setIgnore(List<String> ignore) {
-            this.ignore = ignore;
+            this.ignore = Objects.requireNonNull(ignore);
         }
 
+        public void setDocstrings(boolean check) {
+            this.docstrings = check;
+        }
+
+        public void setLimit(int limit) {
+            this.limit = limit;
+        }
+
+        // TODO: How to handle languages?
         public void setLanguage(String language) {
             this.language = Objects.requireNonNull(language);
         }
@@ -77,36 +84,96 @@ public final class SpellCheckValidator extends AbstractValidator {
         //var lang = Objects.requireNonNullElse(config.language, "en-GB");
         var lt = new JLanguageTool(new CodingEnglish());
         // Deactivate any non-spellcheck rules
-        for (var rule: lt.getAllActiveRules()) {
-            if (!rule.isDictionaryBasedSpellingRule()) {
+        for (var rule : lt.getAllActiveRules()) {
+            if (rule instanceof SpellingCheckRule scr) {
+                scr.addIgnoreTokens(config.ignore);
+            } else {
                 lt.disableRule(rule.getId());
             }
-            // TODO: Add ignore tokens
-        };
+        }
         this.checker = lt;
+        this.config = config;
     }
 
     @Override
     public List<ValidationEvent> validate(Model model) {
         List<ValidationEvent> results = new ArrayList<>();
-        results.addAll(checkShapeNames(model));
-        return results;
-    }
-
-    /**
-     * Checks all shape names (including member names) for potential typos.
-     */
-    private List<ValidationEvent> checkShapeNames(final Model model) {
-        List<ValidationEvent> results = new ArrayList<>();
-        for (var shape: model.shapes().filter(s -> !s.getId().getNamespace().startsWith("smithy")).toList()) {
-            for (var match: getMatches(getShapeName(shape))) {
-                results.add(nameTypo(shape, match));
+        var textIndex = TextIndex.of(model);
+        for (var text : textIndex.getTextInstances()) {
+            for (var match : getMatches(text.getText())) {
+                var event = typoEvent(text, match, this.config.docstrings);
+                if (event != null) {
+                    results.add(event);
+                }
             }
         }
         return results;
     }
 
+    private ValidationEvent typoEvent(TextInstance text, RuleMatch match, boolean checkDocstrings) {
+        return switch (text.getLocationType()) {
+            case APPLIED_TRAIT -> {
+                if (text.getTrait().toShapeId().equals(DocumentationTrait.ID) && !checkDocstrings) {
+                    // Ignore typos in docstrings
+                    yield null;
+                }
+                ValidationEvent validationEvent = danger(text.getShape(), text.getTrait().getSourceLocation(), "");
+                String idiomaticTraitName = Trait.getIdiomaticTraitName(text.getTrait());
+                List<String> suggestions = computeSuggestions(text.getText(), match, this.config.limit);
+                if (text.getTrait().toShapeId().equals(DocumentationTrait.ID)) {
+                    yield validationEvent.toBuilder()
+                            .id(getName() + "." + TRAIT + "." + idiomaticTraitName)
+                            .message(String.format(
+                                    "Potential typo in docstring. Suggested correction(s): %s",
+                                    suggestions))
+                            .build();
+                } else if (text.getTraitPropertyPath().isEmpty()) {
+                    yield validationEvent.toBuilder()
+                            .id(getName() + "." + TRAIT + "." + idiomaticTraitName)
+                            .message(String.format(
+                                    "Potential typo in trait `%s`. Suggested correction(s): %s",
+                                    idiomaticTraitName,
+                                    suggestions))
+                            .build();
+                } else {
+                    String propertyPath = String.join(".", text.getTraitPropertyPath());
+                    yield validationEvent.toBuilder()
+                            .id(getName() + "." + TRAIT + "." + idiomaticTraitName + "." + propertyPath)
+                            .message(String.format(
+                                    "Potential typo in trait `%s` at path {%s}. Suggested correction(s): %s",
+                                    idiomaticTraitName,
+                                    propertyPath,
+                                    suggestions))
+                            .build();
+                }
+            }
+            case NAMESPACE -> {
+                var suggestions = computeSuggestions(text.getText(), match, this.config.limit).stream()
+                        .map(StringUtils::lowerCase)
+                        .toList();
+                yield ValidationEvent.builder()
+                        .severity(Severity.DANGER)
+                        .sourceLocation(SourceLocation.none())
+                        .id(getName() + "." + NAMESPACE)
+                        .message(String.format("Potential typo in namespace `%s`. Suggested correction(s): %s",
+                                text.getText(),
+                                suggestions))
+                        .build();
+            }
+            default -> danger(text.getShape(),
+                    String.format(
+                            "Potential typo in shape name `%s`. Suggested correction(s): %s",
+                            getShapeName(text.getShape()),
+                            computeSuggestions(text.getText(), match, this.config.limit)),
+                    SHAPE);
+        };
+    }
+
     private List<RuleMatch> getMatches(String text) {
+        return getMatches(AnnotationUtils.annotateText(text));
+    }
+
+    private List<RuleMatch> getMatches(AnnotatedText text) {
         try {
             return this.checker.check(text);
         } catch (IOException e) {
@@ -114,36 +181,23 @@ public final class SpellCheckValidator extends AbstractValidator {
         }
     }
 
-    private static ValidationEvent nameTypo(Shape shape, RuleMatch match) {
-        var shapeName = getShapeName(shape);
+    private static List<String> computeSuggestions(String previous, RuleMatch match, int limit) {
         var builder = new StringBuilder();
         if (match.getFromPos() != 0) {
-            builder.append(shapeName, 0, match.getFromPos());
+            builder.append(previous, 0, match.getFromPos());
         }
         builder.append("%s");
-        if (match.getToPos() != shapeName.length()) {
-            builder.append(shapeName, match.getToPos(), shapeName.length() - 1);
+        if (match.getToPos() != previous.length()) {
+            builder.append(previous, match.getToPos(), previous.length() - 1);
         }
         var template = builder.toString();
-        System.out.println("TEMPLATE: " + template);
-        var suggestions = match.getSuggestedReplacements().stream()
+        return match.getSuggestedReplacements()
+                .stream()
                 .map(String::toLowerCase)
                 .distinct()
-                .limit(4)
+                .limit(limit)
                 .map(s -> computeSuggestion(template, s))
                 .toList();
-        var message = String.format(
-                "Potential typo in shape name `%s`. Suggested correction(s): %s",
-                shapeName,
-                suggestions
-        );
-        return ValidationEvent.builder()
-                .id(NAME_TYPO_ID)
-                .severity(Severity.DANGER)
-                .sourceLocation(shape)
-                .shapeId(shape)
-                .message(message)
-                .build();
     }
 
     private static String computeSuggestion(String template, String rec) {

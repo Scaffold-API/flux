@@ -1,0 +1,1 @@
+[DANGER] com.spellcheck.test#ShouldError: Potential typo in docstring. Suggested correction(s): [This docstring contains a supported tag <h1>Spelling error</h1>, This docstring contains a supported tag <h1>Spewing error</h1>, This docstring contains a supported tag <h1>Spieling error</h1>] | SpellCheck.Trait.documentation

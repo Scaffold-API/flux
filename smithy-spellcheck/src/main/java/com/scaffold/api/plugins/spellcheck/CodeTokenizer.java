@@ -1,3 +1,7 @@
+/*
+ * Copyright Scaffold Software LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package com.scaffold.api.plugins.spellcheck;
 
 import java.util.ArrayList;
@@ -6,8 +10,20 @@ import java.util.List;
 import java.util.StringTokenizer;
 import org.languagetool.tokenizers.WordTokenizer;
 
-// TODO: Add credit
+/**
+ * Tokenizer for code.
+ * <p>
+ * Splits camel, snake, and kebab-cased variables into words.
+ */
 public final class CodeTokenizer extends WordTokenizer {
+    private static final CodeTokenizer INSTANCE = new CodeTokenizer();
+
+    private CodeTokenizer() {}
+
+    public static CodeTokenizer instance() {
+        return INSTANCE;
+    }
+
     @Override
     public String getTokenizingCharacters() {
         return super.getTokenizingCharacters() + "–_@";

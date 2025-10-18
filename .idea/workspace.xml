@@ -5,19 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb606951-7a86-449b-bfa0-5caec523329a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/smithy-spellcheck/flux.smithy-spellcheck.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/smithy-spellcheck/flux.smithy-spellcheck.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.smithy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/bad-struct-name.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/bad-struct-name.smithy" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +49,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Default" />
+        <option value="Interface" />
         <option value="Class" />
+        <option value="Default" />
       </list>
     </option>
   </component>
@@ -92,7 +87,7 @@
     "git-widget-placeholder": "main",
     "ignore.preview.features.used": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/huntermellema/scaffold/flux",
+    "last_opened_file_path": "/Users/huntermellema/scaffold/flux/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
@@ -100,7 +95,11 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck" />
