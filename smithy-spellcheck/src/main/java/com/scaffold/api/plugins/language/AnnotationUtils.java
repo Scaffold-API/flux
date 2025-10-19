@@ -1,12 +1,18 @@
-package com.scaffold.api.plugins.spellcheck;
+/*
+ * Copyright Scaffold Software LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+package com.scaffold.api.plugins.language;
 
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.languagetool.markup.AnnotatedText;
 import org.languagetool.markup.AnnotatedTextBuilder;
+import software.amazon.smithy.utils.SmithyInternalApi;
 
-final class AnnotationUtils {
+@SmithyInternalApi
+public final class AnnotationUtils {
     // Used to detect HTML tags in the docs
     private static final Pattern TAG_PATTERN = Pattern.compile("<([a-z]+)*>.*?</\\1>", Pattern.DOTALL);
     // Tags whose contents are still checked by linters
@@ -36,8 +42,7 @@ final class AnnotationUtils {
             "TITLE",
             "TT",
             "U",
-            "UL"
-    );
+            "UL");
     private AnnotationUtils() {}
 
     public static AnnotatedText annotateText(String text) {

@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb606951-7a86-449b-bfa0-5caec523329a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.smithy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/AnnotationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/AnnotationUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodeTokenizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodingEnglish.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/bad-struct-name.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.errors" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/bad-struct-name.smithy" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,9 +47,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="Class" />
         <option value="Default" />
+        <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>

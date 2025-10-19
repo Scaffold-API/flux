@@ -4,18 +4,14 @@
  */
 package com.scaffold.api.plugins.spellcheck;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import com.scaffold.api.plugins.language.LanguageChecker;
+import com.scaffold.api.plugins.language.LanguageCheckerService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.languagetool.JLanguageTool;
-import org.languagetool.markup.AnnotatedText;
-import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
-import org.languagetool.rules.spelling.SpellingCheckRule;
 import software.amazon.smithy.model.Model;
 import software.amazon.smithy.model.SourceLocation;
 import software.amazon.smithy.model.knowledge.TextIndex;
@@ -41,10 +37,9 @@ public final class SpellCheckValidator extends AbstractValidator {
     private static final String NAMESPACE = "Namespace";
     private static final Set<Character> TRIGGER_CHARS = Set.of('-', '_');
 
-    private final JLanguageTool checker;
+    private final LanguageChecker checker;
     private final Config config;
 
-    // TODO: Allow users to disable comment checking
     public static final class Config {
         private List<String> ignore = Collections.emptyList();
         private boolean docstrings = true;
@@ -63,7 +58,6 @@ public final class SpellCheckValidator extends AbstractValidator {
             this.limit = limit;
         }
 
-        // TODO: How to handle languages?
         public void setLanguage(String language) {
             this.language = Objects.requireNonNull(language);
         }
@@ -74,24 +68,16 @@ public final class SpellCheckValidator extends AbstractValidator {
         public Provider() {
             super(SpellCheckValidator.class, configuration -> {
                 var mapper = new NodeMapper();
-                var config = mapper.deserialize(configuration, Config.class);
-                return new SpellCheckValidator(config);
+                var cfg = mapper.deserialize(configuration, Config.class);
+                return new SpellCheckValidator(cfg);
             });
         }
     }
 
     private SpellCheckValidator(Config config) {
-        //var lang = Objects.requireNonNullElse(config.language, "en-GB");
-        var lt = new JLanguageTool(new CodingEnglish());
-        // Deactivate any non-spellcheck rules
-        for (var rule : lt.getAllActiveRules()) {
-            if (rule instanceof SpellingCheckRule scr) {
-                scr.addIgnoreTokens(config.ignore);
-            } else {
-                lt.disableRule(rule.getId());
-            }
-        }
-        this.checker = lt;
+        var lang = Objects.requireNonNullElse(config.language, "en");
+        this.checker = LanguageCheckerService.expect(lang);
+        this.checker.spellCheckOnly(config.ignore);
         this.config = config;
     }
 
@@ -100,7 +86,7 @@ public final class SpellCheckValidator extends AbstractValidator {
         List<ValidationEvent> results = new ArrayList<>();
         var textIndex = TextIndex.of(model);
         for (var text : textIndex.getTextInstances()) {
-            for (var match : getMatches(text.getText())) {
+            for (var match : this.checker.getMatches(text.getText())) {
                 var event = typoEvent(text, match, this.config.docstrings);
                 if (event != null) {
                     results.add(event);
@@ -167,18 +153,6 @@ public final class SpellCheckValidator extends AbstractValidator {
                             computeSuggestions(text.getText(), match, this.config.limit)),
                     SHAPE);
         };
-    }
-
-    private List<RuleMatch> getMatches(String text) {
-        return getMatches(AnnotationUtils.annotateText(text));
-    }
-
-    private List<RuleMatch> getMatches(AnnotatedText text) {
-        try {
-            return this.checker.check(text);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
     }
 
     private static List<String> computeSuggestions(String previous, RuleMatch match, int limit) {
