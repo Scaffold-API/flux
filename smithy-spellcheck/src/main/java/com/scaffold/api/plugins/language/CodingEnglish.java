@@ -16,9 +16,8 @@ import org.languagetool.rules.en.MorfologikAmericanSpellerRule;
 import org.languagetool.tokenizers.Tokenizer;
 import software.amazon.smithy.utils.SmithyInternalApi;
 
-// TODO: Add more common phrases and words
 @SmithyInternalApi
-public class CodingEnglish extends English {
+public final class CodingEnglish extends English {
     private static final List<String> EXTRA_TERMS = List.of(
             "docstring",
             "doc",
@@ -45,9 +44,9 @@ public class CodingEnglish extends English {
     }
 
     /**
-     * Service provider to instantiate a langauge checker for this language.
+     * Service provider to instantiate a language checker.
      */
-    public static final class Provider extends LanguageChecker.Provider {
+    public static final class Provider extends LanguageToolService.Provider {
         public Provider() {
             super("en", CodingEnglish::new);
         }

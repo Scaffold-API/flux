@@ -2,15 +2,14 @@
  * Copyright Scaffold Software LLC. All Rights Reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-package com.scaffold.api.plugins.spellcheck;
+package com.scaffold.api.plugins.language;
 
-import com.scaffold.api.plugins.language.LanguageChecker;
-import com.scaffold.api.plugins.language.LanguageCheckerService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import org.languagetool.JLanguageTool;
 import org.languagetool.rules.RuleMatch;
 import software.amazon.smithy.model.Model;
 import software.amazon.smithy.model.SourceLocation;
@@ -37,7 +36,7 @@ public final class SpellCheckValidator extends AbstractValidator {
     private static final String NAMESPACE = "Namespace";
     private static final Set<Character> TRIGGER_CHARS = Set.of('-', '_');
 
-    private final LanguageChecker checker;
+    private final JLanguageTool tool;
     private final Config config;
 
     public static final class Config {
@@ -76,8 +75,8 @@ public final class SpellCheckValidator extends AbstractValidator {
 
     private SpellCheckValidator(Config config) {
         var lang = Objects.requireNonNullElse(config.language, "en");
-        this.checker = LanguageCheckerService.expect(lang);
-        this.checker.spellCheckOnly(config.ignore);
+        this.tool = LanguageToolService.expect(lang);
+        LanguageCheckingUtils.configureSpellcheck(this.tool, config.ignore);
         this.config = config;
     }
 
@@ -86,7 +85,7 @@ public final class SpellCheckValidator extends AbstractValidator {
         List<ValidationEvent> results = new ArrayList<>();
         var textIndex = TextIndex.of(model);
         for (var text : textIndex.getTextInstances()) {
-            for (var match : this.checker.getMatches(text.getText())) {
+            for (var match : LanguageCheckingUtils.getMatches(this.tool, text.getText())) {
                 var event = typoEvent(text, match, this.config.docstrings);
                 if (event != null) {
                     results.add(event);

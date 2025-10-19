@@ -4,15 +4,22 @@
  */
 package com.scaffold.api.plugins.language;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.languagetool.JLanguageTool;
 import org.languagetool.markup.AnnotatedText;
 import org.languagetool.markup.AnnotatedTextBuilder;
-import software.amazon.smithy.utils.SmithyInternalApi;
+import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.spelling.SpellingCheckRule;
 
-@SmithyInternalApi
-public final class AnnotationUtils {
+/**
+ * Utilities for checking text in Models.
+ */
+final class LanguageCheckingUtils {
     // Used to detect HTML tags in the docs
     private static final Pattern TAG_PATTERN = Pattern.compile("<([a-z]+)*>.*?</\\1>", Pattern.DOTALL);
     // Tags whose contents are still checked by linters
@@ -43,9 +50,24 @@ public final class AnnotationUtils {
             "TT",
             "U",
             "UL");
-    private AnnotationUtils() {}
+    private LanguageCheckingUtils() { /* Utility Class */ }
 
-    public static AnnotatedText annotateText(String text) {
+    /**
+     * Get all potential problems matched by a rule
+     *
+     * @param tool LanguageTool instance
+     * @param text Text to check
+     * @return list of all matched rules
+     */
+    static List<RuleMatch> getMatches(JLanguageTool tool, String text) {
+        try {
+            return tool.check(annotateText(text));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static AnnotatedText annotateText(String text) {
         var builder = new AnnotatedTextBuilder();
         annotateText(text, builder);
         return builder.build();
@@ -78,4 +100,21 @@ public final class AnnotationUtils {
         // Write out all remaining
         builder.addText(text.substring(lastMatchPos));
     }
+
+    /**
+     * Disables all non-spellcheck rules and sets any ignored tokens.
+     *
+     * @param ignored - Tokens to ignore when spell checking
+     */
+    static void configureSpellcheck(JLanguageTool tool, List<String> ignored) {
+        for (var rule : tool.getAllActiveRules()) {
+            if (rule instanceof SpellingCheckRule scr) {
+                scr.addIgnoreTokens(ignored);
+            } else {
+                // Deactivate any non-spellcheck rules
+                tool.disableRule(rule.getId());
+            }
+        }
+    }
+
 }

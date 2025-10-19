@@ -5,11 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb606951-7a86-449b-bfa0-5caec523329a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/AnnotationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/AnnotationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodeTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodeTokenizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/CodingEnglish.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodingEnglish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/AnnotationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/LanguageCheckingUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodingEnglish.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/CodingEnglish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/LanguageChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/LanguageCheckerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/LanguageToolService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/spellcheck/SpellCheckValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/java/com/scaffold/api/plugins/language/SpellCheckValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/resources/META-INF/services/com.scaffold.api.plugins.language.LanguageCheckerService" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/resources/META-INF/services/com.scaffold.api.plugins.language.LanguageToolService" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/main/resources/META-INF/services/software.amazon.smithy.model.validation.ValidatorService" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/main/resources/META-INF/services/software.amazon.smithy.model.validation.ValidatorService" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/java/com/scaffold/api/plugins/spellcheck/SpellCheckUtilsTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/java/com/scaffold/api/plugins/spellcheck/TestRunnerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/java/com/scaffold/api/plugins/language/TestRunnerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/default-config.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/default-config.smithy" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/default-config.smithy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignore-docstrings.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignore-docstrings.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignore-docstrings.smithy" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignore-docstrings.smithy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignore-terms.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignore-terms.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignore-terms.smithy" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignore-terms.smithy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignores-unsupported-tags.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignores-unsupported-tags.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/ignores-unsupported-tags.smithy" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/ignores-unsupported-tags.smithy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/limit-suggestions.errors" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/limit-suggestions.errors" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles/limit-suggestions.smithy" beforeDir="false" afterPath="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language/errorfiles/limit-suggestions.smithy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,8 +62,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Default" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -77,6 +91,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Default.smithy": "Default",
     "Gradle.Download Sources.executor": "Run",
+    "Gradle.TestRunnerTest (1).executor": "Run",
     "Gradle.TestRunnerTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -97,13 +112,38 @@
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/language" />
+      <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/language/errorfiles" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/errorfiles" />
       <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck/" />
-      <recent name="$PROJECT_DIR$/smithy-spellcheck/src/test/resources/com/scaffold/api/plugins/spellcheck" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.TestRunnerTest (1)">
+    <configuration name="TestRunnerTest (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":smithy-spellcheck:test" />
+            <option value="--tests" />
+            <option value="&quot;com.scaffold.api.plugins.language.TestRunnerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="TestRunnerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -140,6 +180,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TestRunnerTest (1)" />
         <item itemvalue="Gradle.TestRunnerTest" />
       </list>
     </recent_temporary>
