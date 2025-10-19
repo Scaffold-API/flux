@@ -43,8 +43,8 @@ public final class ProofreadValidator extends AbstractValidator {
     }
 
     private ProofreadValidator(Config config) {
-        var lang = Objects.requireNonNullElse(config.language, "en");
-        this.tool = LanguageToolService.expect(lang);
+        var langCode = Objects.requireNonNullElse(config.language, "en");
+        tool = new JLanguageTool(LanguageService.load(langCode, getClass().getClassLoader()));
         // Disable spellcheck rules.
         for (var rule : tool.getAllActiveRules()) {
             if (rule instanceof SpellingCheckRule) {

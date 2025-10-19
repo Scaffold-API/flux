@@ -16,13 +16,6 @@ import org.languagetool.tokenizers.WordTokenizer;
  * Splits camel, snake, and kebab-cased variables into words.
  */
 public final class CodeTokenizer extends WordTokenizer {
-    private static final CodeTokenizer INSTANCE = new CodeTokenizer();
-
-    private CodeTokenizer() {}
-
-    public static CodeTokenizer instance() {
-        return INSTANCE;
-    }
 
     @Override
     public String getTokenizingCharacters() {

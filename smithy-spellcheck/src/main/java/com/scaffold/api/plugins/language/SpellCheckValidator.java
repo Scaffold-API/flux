@@ -26,11 +26,9 @@ import software.amazon.smithy.model.validation.ValidatorService;
 import software.amazon.smithy.utils.SmithyInternalApi;
 import software.amazon.smithy.utils.StringUtils;
 
-/**
- * TODO: DOCS
- */
 @SmithyInternalApi
 public final class SpellCheckValidator extends AbstractValidator {
+    private static final String HINT = "Add word to `ignore` list in SpellCheck configuration to ignore.";
     private static final String TRAIT = "Trait";
     private static final String SHAPE = "Shape";
     private static final String NAMESPACE = "Namespace";
@@ -76,8 +74,8 @@ public final class SpellCheckValidator extends AbstractValidator {
 
     private SpellCheckValidator(Config config) {
         var lang = Objects.requireNonNullElse(config.language, "en");
-        this.tool = LanguageToolService.expect(lang);
-        LanguageCheckingUtils.configureSpellcheck(this.tool, config.ignore);
+        tool = new JLanguageTool(LanguageService.load(lang, getClass().getClassLoader()));
+        LanguageCheckingUtils.configureSpellcheck(tool, config.ignore);
         this.docstrings = config.docstrings;
         this.limit = config.limit;
     }
@@ -106,13 +104,14 @@ public final class SpellCheckValidator extends AbstractValidator {
                 }
                 ValidationEvent validationEvent = danger(text.getShape(), text.getTrait().getSourceLocation(), "");
                 String idiomaticTraitName = Trait.getIdiomaticTraitName(text.getTrait());
-                List<String> suggestions = computeSuggestions(text.getText(), match, this.limit);
+                var suggestions = computeSuggestions(text.getText(), match, this.limit);
                 if (text.getTrait().toShapeId().equals(DocumentationTrait.ID)) {
                     yield validationEvent.toBuilder()
                             .id(getName() + "." + TRAIT + "." + idiomaticTraitName)
                             .message(String.format(
                                     "Potential typo in docstring. Suggested correction(s): %s",
                                     suggestions))
+                            .hint(HINT)
                             .build();
                 } else if (text.getTraitPropertyPath().isEmpty()) {
                     yield validationEvent.toBuilder()
@@ -121,6 +120,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                                     "Potential typo in trait `%s`. Suggested correction(s): %s",
                                     idiomaticTraitName,
                                     suggestions))
+                            .hint(HINT)
                             .build();
                 } else {
                     String propertyPath = String.join(".", text.getTraitPropertyPath());
@@ -131,6 +131,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                                     idiomaticTraitName,
                                     propertyPath,
                                     suggestions))
+                            .hint(HINT)
                             .build();
                 }
             }
@@ -145,6 +146,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                         .message(String.format("Potential typo in namespace `%s`. Suggested correction(s): %s",
                                 text.getText(),
                                 suggestions))
+                        .hint(HINT)
                         .build();
             }
             default -> danger(text.getShape(),
@@ -152,7 +154,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                             "Potential typo in shape name `%s`. Suggested correction(s): %s",
                             getShapeName(text.getShape()),
                             computeSuggestions(text.getText(), match, this.limit)),
-                    SHAPE);
+                    SHAPE).toBuilder().hint(HINT).build();
         };
     }
 

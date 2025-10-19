@@ -16,6 +16,12 @@ import org.languagetool.rules.en.MorfologikAmericanSpellerRule;
 import org.languagetool.tokenizers.Tokenizer;
 import software.amazon.smithy.utils.SmithyInternalApi;
 
+/**
+ * Default Implementation of English language for models.
+ * <p>
+ * Note: Based on implementation in <a href="https://github.com/aha-oretama/TypoFixer">TypoFixer</a>.
+ */
+@SuppressWarnings("deprecation")
 @SmithyInternalApi
 public final class CodingEnglish extends English {
     private static final List<String> EXTRA_TERMS = List.of(
@@ -26,7 +32,7 @@ public final class CodingEnglish extends English {
 
     @Override
     public Tokenizer createDefaultWordTokenizer() {
-        return CodeTokenizer.instance();
+        return new CodeTokenizer();
     }
 
     @Override
@@ -46,7 +52,7 @@ public final class CodingEnglish extends English {
     /**
      * Service provider to instantiate a language checker.
      */
-    public static final class Provider extends LanguageToolService.Provider {
+    public static final class Provider extends LanguageService.Provider {
         public Provider() {
             super("en", CodingEnglish::new);
         }

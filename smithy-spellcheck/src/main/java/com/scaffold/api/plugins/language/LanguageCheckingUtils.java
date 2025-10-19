@@ -78,7 +78,6 @@ final class LanguageCheckingUtils {
         // Split out any HTML-tag wrapped sections
         Matcher matcher = TAG_PATTERN.matcher(text);
         int lastMatchPos = 0;
-        System.out.println();
         while (matcher.find()) {
             // add all plain text contents up to the match
             builder.addText(text.substring(lastMatchPos, matcher.start()));

@@ -7,6 +7,7 @@ spotbugs = "6.0.22"
 spotless = "8.0.0"
 dep-analysis = "3.0.4"
 lang-tool = "6.6"
+shadow = "8.3.9"
 
 [libraries]
 # Smithy deps
@@ -14,7 +15,6 @@ smithy-model = { module = "software.amazon.smithy:smithy-model", version.ref = "
 
 # Other deps
 langtool-en = { module = "org.languagetool:language-en", version.ref = "lang-tool"}
-langtool-core = { module = "org.languagetool:languagetool-core", version.ref = "lang-tool" }
 
 # Test dependencies
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }
@@ -29,3 +29,6 @@ test-logger-plugin = { module = "com.adarshr:gradle-test-logger-plugin", version
 spotbugs = { module = "com.github.spotbugs.snom:spotbugs-gradle-plugin", version.ref = "spotbugs" }
 spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 dependency-analysis = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dep-analysis" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref =  "shadow"}
