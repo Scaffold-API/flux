@@ -1,1 +1,2 @@
 com.scaffold.api.plugins.language.SpellCheckValidator$Provider
+com.scaffold.api.plugins.language.ProofreadValidator$Provider

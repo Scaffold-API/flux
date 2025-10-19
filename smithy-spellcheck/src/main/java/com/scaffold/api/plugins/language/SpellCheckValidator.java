@@ -37,7 +37,8 @@ public final class SpellCheckValidator extends AbstractValidator {
     private static final Set<Character> TRIGGER_CHARS = Set.of('-', '_');
 
     private final JLanguageTool tool;
-    private final Config config;
+    private final boolean docstrings;
+    private final int limit;
 
     public static final class Config {
         private List<String> ignore = Collections.emptyList();
@@ -77,7 +78,8 @@ public final class SpellCheckValidator extends AbstractValidator {
         var lang = Objects.requireNonNullElse(config.language, "en");
         this.tool = LanguageToolService.expect(lang);
         LanguageCheckingUtils.configureSpellcheck(this.tool, config.ignore);
-        this.config = config;
+        this.docstrings = config.docstrings;
+        this.limit = config.limit;
     }
 
     @Override
@@ -86,7 +88,7 @@ public final class SpellCheckValidator extends AbstractValidator {
         var textIndex = TextIndex.of(model);
         for (var text : textIndex.getTextInstances()) {
             for (var match : LanguageCheckingUtils.getMatches(this.tool, text.getText())) {
-                var event = typoEvent(text, match, this.config.docstrings);
+                var event = typoEvent(text, match, this.docstrings);
                 if (event != null) {
                     results.add(event);
                 }
@@ -104,7 +106,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                 }
                 ValidationEvent validationEvent = danger(text.getShape(), text.getTrait().getSourceLocation(), "");
                 String idiomaticTraitName = Trait.getIdiomaticTraitName(text.getTrait());
-                List<String> suggestions = computeSuggestions(text.getText(), match, this.config.limit);
+                List<String> suggestions = computeSuggestions(text.getText(), match, this.limit);
                 if (text.getTrait().toShapeId().equals(DocumentationTrait.ID)) {
                     yield validationEvent.toBuilder()
                             .id(getName() + "." + TRAIT + "." + idiomaticTraitName)
@@ -133,7 +135,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                 }
             }
             case NAMESPACE -> {
-                var suggestions = computeSuggestions(text.getText(), match, this.config.limit).stream()
+                var suggestions = computeSuggestions(text.getText(), match, this.limit).stream()
                         .map(StringUtils::lowerCase)
                         .toList();
                 yield ValidationEvent.builder()
@@ -149,7 +151,7 @@ public final class SpellCheckValidator extends AbstractValidator {
                     String.format(
                             "Potential typo in shape name `%s`. Suggested correction(s): %s",
                             getShapeName(text.getShape()),
-                            computeSuggestions(text.getText(), match, this.config.limit)),
+                            computeSuggestions(text.getText(), match, this.limit)),
                     SHAPE);
         };
     }
