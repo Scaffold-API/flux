@@ -6,7 +6,7 @@ plugins {
 
 description = "This module provides proofreading and spellchecking plugins for Smithy"
 
-extra["displayName"] = "Scaffold :: Plugins :: Spellcheck"
+extra["displayName"] = "Scaffold :: Plugins :: Proofread"
 extra["moduleName"] = "com.scaffold.api.plugins.language"
 
 dependencies {

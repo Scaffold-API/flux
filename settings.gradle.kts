@@ -9,4 +9,4 @@ pluginManagement {
 rootProject.name = "flux"
 
 // Smithy Build Plugins
-include(":smithy-spellcheck")
+include(":smithy-proofread")

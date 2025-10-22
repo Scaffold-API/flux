@@ -2,4 +2,4 @@
 Smithy utilities, extensions, and tools
 
 ## Smithy Linters
-- Smithy-Spellcheck: Spell checker to detect potential typos in smithy models
+- [Smithy-Proofread](./smithy-proofread): Basic proofreading linters to detect potential typos and grammatical mistakes in smithy models
