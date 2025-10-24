@@ -16,7 +16,7 @@ dependencies {
     implementation(libs.langtool.en)
 
     // Suppress logging from the language tool
-    implementation("org.slf4j:slf4j-nop:2.0.17")
+    implementation(libs.slf4j.nop)
 }
 
 tasks {

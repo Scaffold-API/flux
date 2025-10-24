@@ -8,6 +8,7 @@ spotless = "8.0.0"
 dep-analysis = "3.0.4"
 lang-tool = "6.6"
 shadow = "8.3.9"
+slf4j = "2.0.17"
 
 [libraries]
 # Smithy deps
@@ -15,6 +16,7 @@ smithy-model = { module = "software.amazon.smithy:smithy-model", version.ref = "
 
 # Other deps
 langtool-en = { module = "org.languagetool:language-en", version.ref = "lang-tool"}
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 
 # Test dependencies
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }
