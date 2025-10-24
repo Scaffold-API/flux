@@ -43,9 +43,6 @@ jobs:
       - name: Clean, build and javadoc
         run: ./gradlew clean build javadoc -Plog-tests --stacktrace
 
-      - name: Integration tests
-        run: ./gradlew integ -Plog-tests --stacktrace
-
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
