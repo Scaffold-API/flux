@@ -28,7 +28,11 @@ public final class CodingEnglish extends English {
             "docstring",
             "doc",
             "api",
-            "sdk");
+            "sdk",
+            "grpc",
+            "openapi",
+            "idx",
+            "com");
 
     @Override
     public Tokenizer createDefaultWordTokenizer() {
