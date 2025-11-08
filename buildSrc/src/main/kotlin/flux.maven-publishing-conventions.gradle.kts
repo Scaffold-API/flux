@@ -1,6 +1,5 @@
 plugins {
     `maven-publish`
-    signing
 }
 
 interface PublishingConfigExtension {
@@ -57,23 +56,6 @@ publishing {
                     }
                 }
             }
-        }
-    }
-}
-
-signing {
-    setRequired {
-        // signing is required only if the artifacts are to be published to a maven repository
-        gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
-    }
-
-    // Don't sign the artifacts if we didn't get a key and password to use.
-    if (project.hasProperty("signingKey") && project.hasProperty("signingPassword")) {
-        signing {
-            useInMemoryPgpKeys(
-                project.properties["signingKey"].toString(),
-                project.properties["signingPassword"].toString())
-            sign(publishing.publications)
         }
     }
 }
