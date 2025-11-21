@@ -13,9 +13,6 @@ dependencies {
 
     // TODO: build a shaded for french, spanish, german, polish etc.
     implementation(libs.langtool.en)
-
-    // Suppress logging from the language tool
-    implementation(libs.slf4j.nop)
 }
 
 tasks {
